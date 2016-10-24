@@ -4,6 +4,7 @@
 #import "GPUImageContext.h"
 #import "GPUImageOutput.h"
 #import "GPUImageColorConversion.h"
+#import "CSUCameraPreView.h"
 
 //Optionally override the YUV to RGB matrices
 void setColorConversion601( GLfloat conversionMatrix[9] );
@@ -75,6 +76,8 @@ void setColorConversion709( GLfloat conversionMatrix[9] );
 @property(readwrite, nonatomic) BOOL horizontallyMirrorFrontFacingCamera, horizontallyMirrorRearFacingCamera;
 
 @property(nonatomic, assign) id<GPUImageVideoCameraDelegate> delegate;
+
+@property (nonatomic) CSUCameraPreView *cameraPreview;
 
 /// @name Initialization and teardown
 

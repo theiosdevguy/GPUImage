@@ -41,6 +41,8 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
     BOOL addedAudioInputsDueToEncodingTarget;
 }
 
+@property (nonatomic) AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
+
 - (void)updateOrientationSendToTargets;
 - (void)convertYUVToRGBOutput;
 
@@ -218,6 +220,8 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
 	_captureSessionPreset = sessionPreset;
     [_captureSession setSessionPreset:_captureSessionPreset];
 
+    [_cameraPreview setSession:_captureSession];
+
 // This will let you get 60 FPS video from the 720p preset on an iPhone 4S, but only that device and that preset
 //    AVCaptureConnection *conn = [videoOutput connectionWithMediaType:AVMediaTypeVideo];
 //    
@@ -338,10 +342,19 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
 - (void)startCameraCapture;
 {
     if (![_captureSession isRunning])
-	{
+    {
+        CALayer *viewLayer = _cameraPreview.layer;
+        [viewLayer setMasksToBounds:NO];
+        
+        _captureVideoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_captureSession];
+        _captureVideoPreviewLayer.frame = _cameraPreview.frame;
+        _captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+        
+        [_cameraPreview.layer addSublayer:_captureVideoPreviewLayer];
+        
         startingCaptureTime = [NSDate date];
-		[_captureSession startRunning];
-	};
+        [_captureSession startRunning];
+    };
 }
 
 - (void)stopCameraCapture;
