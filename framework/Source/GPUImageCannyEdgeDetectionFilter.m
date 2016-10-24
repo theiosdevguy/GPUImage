@@ -5,6 +5,7 @@
 #import "GPUImageDirectionalNonMaximumSuppressionFilter.h"
 #import "GPUImageWeakPixelInclusionFilter.h"
 #import "GPUImageSingleComponentGaussianBlurFilter.h"
+#import "GPUImageColorInvertFilter.h"
 
 @implementation GPUImageCannyEdgeDetectionFilter
 
@@ -19,7 +20,7 @@
 {
     if (!(self = [super init]))
     {
-		return nil;
+        return nil;
     }
     
     // First pass: convert image to luminance
@@ -34,7 +35,7 @@
     edgeDetectionFilter = [[GPUImageDirectionalSobelEdgeDetectionFilter alloc] init];
     [self addFilter:edgeDetectionFilter];
     
-    // Fourth pass: apply non-maximum suppression    
+    // Fourth pass: apply non-maximum suppression
     nonMaximumSuppressionFilter = [[GPUImageDirectionalNonMaximumSuppressionFilter alloc] init];
     [self addFilter:nonMaximumSuppressionFilter];
     
@@ -42,17 +43,21 @@
     weakPixelInclusionFilter = [[GPUImageWeakPixelInclusionFilter alloc] init];
     [self addFilter:weakPixelInclusionFilter];
     
+    //    colorInversionFilter = [[GPUImageColorInvertFilter alloc] init];
+    //    [self addFilter:colorInversionFilter];
+    
     [luminanceFilter addTarget:blurFilter];
     [blurFilter addTarget:edgeDetectionFilter];
     [edgeDetectionFilter addTarget:nonMaximumSuppressionFilter];
     [nonMaximumSuppressionFilter addTarget:weakPixelInclusionFilter];
+    //    [weakPixelInclusionFilter addTarget:colorInversionFilter];
     
     self.initialFilters = [NSArray arrayWithObject:luminanceFilter];
-//    self.terminalFilter = nonMaximumSuppressionFilter;
+    //    self.terminalFilter = nonMaximumSuppressionFilter;
     self.terminalFilter = weakPixelInclusionFilter;
     
     self.blurRadiusInPixels = 2.0;
-    self.blurTexelSpacingMultiplier = 1.0;
+    self.blurTexelSpacingMultiplier = 0.2;
     self.upperThreshold = 0.4;
     self.lowerThreshold = 0.1;
     
@@ -120,6 +125,26 @@
 - (CGFloat)lowerThreshold;
 {
     return nonMaximumSuppressionFilter.lowerThreshold;
+}
+
+-(void)setEdgeColor:(GPUVector4)edgeColor
+{
+    [weakPixelInclusionFilter setPixelColor:edgeColor];
+}
+
+-(GPUVector4)edgeColor
+{
+    return weakPixelInclusionFilter.pixelColor;
+}
+
+-(void)setFillColor:(GPUVector4)fillColor
+{
+    [weakPixelInclusionFilter setFillColor:fillColor];
+}
+
+-(GPUVector4)fillColor
+{
+    return weakPixelInclusionFilter.fillColor;
 }
 
 @end
