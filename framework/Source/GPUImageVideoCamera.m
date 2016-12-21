@@ -389,7 +389,6 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
     [_cameraPreview setSession:_captureSession];
     
     [[self videoCaptureConnection] setVideoOrientation:AVCaptureVideoOrientationPortrait];
-    [(NSObject *)_sDelegate setValue:[self videoCaptureConnection] forKey:@"videoConnection"];
     
     [_captureSession commitConfiguration];
     
