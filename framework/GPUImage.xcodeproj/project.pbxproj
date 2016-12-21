@@ -715,9 +715,6 @@
 		D30ACF231BAFE3DD00E9759C /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D30ACF221BAFE3DD00E9759C /* AssetsLibrary.framework */; };
 		D443237A17C81C0C00204484 /* GPUImageMovieComposition.h in Headers */ = {isa = PBXBuildFile; fileRef = D443237817C81C0C00204484 /* GPUImageMovieComposition.h */; };
 		D443237B17C81C0C00204484 /* GPUImageMovieComposition.m in Sources */ = {isa = PBXBuildFile; fileRef = D443237917C81C0C00204484 /* GPUImageMovieComposition.m */; };
-		DEE875101DBE9DB5007539B6 /* CSUCameraPreView.h in Headers */ = {isa = PBXBuildFile; fileRef = DEE8750E1DBE9DB5007539B6 /* CSUCameraPreView.h */; };
-		DEE875111DBE9DB5007539B6 /* CSUCameraPreView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEE8750F1DBE9DB5007539B6 /* CSUCameraPreView.m */; };
-		DEE875121DBE9DBC007539B6 /* CSUCameraPreView.m in Sources */ = {isa = PBXBuildFile; fileRef = DEE8750F1DBE9DB5007539B6 /* CSUCameraPreView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1076,8 +1073,6 @@
 		D30ACF221BAFE3DD00E9759C /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		D443237817C81C0C00204484 /* GPUImageMovieComposition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GPUImageMovieComposition.h; path = Source/GPUImageMovieComposition.h; sourceTree = SOURCE_ROOT; };
 		D443237917C81C0C00204484 /* GPUImageMovieComposition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GPUImageMovieComposition.m; path = Source/GPUImageMovieComposition.m; sourceTree = SOURCE_ROOT; };
-		DEE8750E1DBE9DB5007539B6 /* CSUCameraPreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSUCameraPreView.h; path = Source/CSUCameraPreView.h; sourceTree = SOURCE_ROOT; };
-		DEE8750F1DBE9DB5007539B6 /* CSUCameraPreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSUCameraPreView.m; path = Source/CSUCameraPreView.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1353,8 +1348,6 @@
 		BCB5E78114E232BC00701302 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				DEE8750E1DBE9DB5007539B6 /* CSUCameraPreView.h */,
-				DEE8750F1DBE9DB5007539B6 /* CSUCameraPreView.m */,
 				BCB5E77D14E22E4200701302 /* GPUImageOutput.h */,
 				BCB5E77E14E22E4200701302 /* GPUImageOutput.m */,
 				BCB5E76314E208D600701302 /* GPUImageVideoCamera.h */,
@@ -1914,7 +1907,6 @@
 				B80171E616311FCB001C8D16 /* GPUImageHueBlendFilter.h in Headers */,
 				84FFC80B1936408F00994258 /* GPUImagePicture+TextureSubimage.h in Headers */,
 				B80171FE16312800001C8D16 /* GPUImageSaturationBlendFilter.h in Headers */,
-				DEE875101DBE9DB5007539B6 /* CSUCameraPreView.h in Headers */,
 				B801722F16313151001C8D16 /* GPUImageLuminosityBlendFilter.h in Headers */,
 				BC185E7A16B866AD00EA01AD /* GPUImageLinearBurnBlendFilter.h in Headers */,
 				BC185E7E16B866CE00EA01AD /* GPUImageGaussianBlurPositionFilter.h in Headers */,
@@ -2174,7 +2166,6 @@
 				BCD81FB419440605007133DB /* GPUImagePolkaDotFilter.m in Sources */,
 				BCD81FB519440605007133DB /* GPUImageHalftoneFilter.m in Sources */,
 				BCD81FB619440605007133DB /* GPUImagePolarPixellateFilter.m in Sources */,
-				DEE875121DBE9DBC007539B6 /* CSUCameraPreView.m in Sources */,
 				BCD81FB719440605007133DB /* GPUImageCrosshatchFilter.m in Sources */,
 				BCD81FB819440605007133DB /* GPUImageSketchFilter.m in Sources */,
 				BCD81FB919440605007133DB /* GPUImageThresholdSketchFilter.m in Sources */,
@@ -2211,7 +2202,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC245DCB14DDBED7009FE7EB /* GPUImageFilter.m in Sources */,
-				DEE875111DBE9DB5007539B6 /* CSUCameraPreView.m in Sources */,
 				BCB5E75D14E2086300701302 /* GPUImageView.m in Sources */,
 				BCB5E76614E208D700701302 /* GPUImageVideoCamera.m in Sources */,
 				BCB5E76D14E20AD700701302 /* GPUImageContext.m in Sources */,
