@@ -230,7 +230,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
     return self;
 }
 
-- (id)initWithSessionPreset:(NSString *)sessionPreset cameraPosition:(AVCaptureDevicePosition)cameraPosition delegate:(id)aDelegate
+- (id)initWithSessionPreset:(NSString *)sessionPreset cameraPosition:(AVCaptureDevicePosition)cameraPosition captureAsYUV:(BOOL)captureYUV delegate:(id)aDelegate
 {
     if (!(self = [super init]))
     {
@@ -249,7 +249,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
     capturePaused = NO;
     outputRotation = kGPUImageNoRotation;
     internalRotation = kGPUImageNoRotation;
-    captureAsYUV = YES;
+    captureAsYUV = captureYUV;
     _preferredConversion = kColorConversion709;
     
     // Grab the back-facing or front-facing camera
@@ -406,14 +406,14 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
 }
 
 
-- (void)captureStillImage:(void (^)(NSData *))completionHandler {
+- (void)captureStillImageWithFlashMode:(AVCaptureFlashMode)flashMode completionHandler:(void (^)(NSData *))completionHandler {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         AVCaptureConnection *conn = [self.stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
         [conn setVideoOrientation:AVCaptureVideoOrientationPortrait];
         
         // Flash set to Auto for Still Capture
-        [self setFlashMode:AVCaptureFlashModeAuto forDevice:[self deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionBack]];
+        [self setFlashMode:flashMode forDevice:[self deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionBack]];
         
 //        DDLogVerbose(@"self stillImageOutput %@", self.stillImageOutput);
 //        DDLogVerbose(@"AVCaptureConnection %@", conn);
