@@ -282,7 +282,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
     
     // Add the video frame output
     videoOutput = [[AVCaptureVideoDataOutput alloc] init];
-//    [videoOutput setAlwaysDiscardsLateVideoFrames:NO];
+    [videoOutput setAlwaysDiscardsLateVideoFrames:YES];
     
     //    if (captureAsYUV && [GPUImageContext deviceSupportsRedTextures])
     if (captureAsYUV && [GPUImageContext supportsFastTextureUpload])
@@ -381,10 +381,10 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
     {
         [_captureSession addOutput:self.stillImageOutput];
     }
-
+    
     
     _captureSessionPreset = sessionPreset;
-    [_captureSession setSessionPreset:AVCaptureSessionPresetMedium];
+    [_captureSession setSessionPreset:_captureSessionPreset];
     
     [_cameraPreview setSession:_captureSession];
     
@@ -415,8 +415,8 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
         // Flash set to Auto for Still Capture
         [self setFlashMode:flashMode forDevice:[self deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionBack]];
         
-//        DDLogVerbose(@"self stillImageOutput %@", self.stillImageOutput);
-//        DDLogVerbose(@"AVCaptureConnection %@", conn);
+        //        DDLogVerbose(@"self stillImageOutput %@", self.stillImageOutput);
+        //        DDLogVerbose(@"AVCaptureConnection %@", conn);
         
         // Capture a still image.
         [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:conn completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
@@ -444,7 +444,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
         }
         else
         {
-//            DDLogError(@"Set Fash mode error - %@", error);
+            //            DDLogError(@"Set Fash mode error - %@", error);
         }
     }
 }
@@ -478,15 +478,15 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
         
         //        [[(AVCaptureVideoPreviewLayer *)[_cameraPreView layer] connection] setVideoOrientation:(AVCaptureVideoOrientation)orientation];
         
-//        if (_captureSession.outputs.count > 0) {
-//            for (AVCaptureConnection *connection in ((AVCaptureVideoDataOutput *)_captureSession.outputs[0]).connections) {
-//                for ( AVCaptureInputPort *port in [connection inputPorts] ) {
-//                    if ( [[port mediaType] isEqual:AVMediaTypeVideo] ) {
-//                        [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
-//                    }
-//                }
-//            }
-//        }
+        //        if (_captureSession.outputs.count > 0) {
+        //            for (AVCaptureConnection *connection in ((AVCaptureVideoDataOutput *)_captureSession.outputs[0]).connections) {
+        //                for ( AVCaptureInputPort *port in [connection inputPorts] ) {
+        //                    if ( [[port mediaType] isEqual:AVMediaTypeVideo] ) {
+        //                        [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+        //                    }
+        //                }
+        //            }
+        //        }
         
         [[self videoCaptureConnection] setVideoOrientation:AVCaptureVideoOrientationPortrait];
         
@@ -518,7 +518,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
 - (BOOL)addAudioInputsAndOutputs
 {
     if (audioOutput)
-    return NO;
+        return NO;
     
     [_captureSession beginConfiguration];
     
@@ -547,7 +547,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
 - (BOOL)removeAudioInputsAndOutputs
 {
     if (!audioOutput)
-    return NO;
+        return NO;
     
     [_captureSession beginConfiguration];
     [_captureSession removeInput:audioInput];
@@ -606,7 +606,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
         CALayer *viewLayer = _cameraPreview.layer;
         [viewLayer setMasksToBounds:YES];
         
-//        [[(AVCaptureVideoPreviewLayer *)[_cameraPreview layer] connection] setVideoOrientation:AVCaptureVideoOrientationPortrait];
+        //        [[(AVCaptureVideoPreviewLayer *)[_cameraPreview layer] connection] setVideoOrientation:AVCaptureVideoOrientationPortrait];
         
         _captureVideoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_captureSession];
         
@@ -614,8 +614,8 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
         //        _cameraPreview.frame = CGRectMake(0, 0, 320, 524);
         
         _captureVideoPreviewLayer.frame = _cameraPreview.bounds;//CGRectMake(_cameraPreview.frame.origin.x, _cameraPreview.frame.origin.y, _cameraPreview.frame.size.width, _cameraPreview.frame.size.height);//_cameraPreview.bounds;
-//                _captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-        
+        _captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+        _captureVideoPreviewLayer.bounds = _captureVideoPreviewLayer.bounds;
         
         [_cameraPreview.layer addSublayer:_captureVideoPreviewLayer];
         
@@ -645,7 +645,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
 - (void)rotateCamera
 {
     if (self.frontFacingCameraPresent == NO)
-    return;
+        return;
     
     NSError *error;
     AVCaptureDeviceInput *newVideoInput;
@@ -705,7 +705,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
     for (AVCaptureDevice *device in devices)
     {
         if ([device position] == AVCaptureDevicePositionBack)
-        return YES;
+            return YES;
     }
     
     return NO;
@@ -723,7 +723,7 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
     for (AVCaptureDevice *device in devices)
     {
         if ([device position] == AVCaptureDevicePositionFront)
-        return YES;
+            return YES;
     }
     
     return NO;
@@ -770,10 +770,10 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
                 if ([connection respondsToSelector:@selector(setVideoMinFrameDuration:)])
-                connection.videoMinFrameDuration = CMTimeMake(1, _frameRate);
+                    connection.videoMinFrameDuration = CMTimeMake(1, _frameRate);
                 
                 if ([connection respondsToSelector:@selector(setVideoMaxFrameDuration:)])
-                connection.videoMaxFrameDuration = CMTimeMake(1, _frameRate);
+                    connection.videoMaxFrameDuration = CMTimeMake(1, _frameRate);
 #pragma clang diagnostic pop
             }
         }
@@ -801,10 +801,10 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
                 if ([connection respondsToSelector:@selector(setVideoMinFrameDuration:)])
-                connection.videoMinFrameDuration = kCMTimeInvalid; // This sets videoMinFrameDuration back to default
+                    connection.videoMinFrameDuration = kCMTimeInvalid; // This sets videoMinFrameDuration back to default
                 
                 if ([connection respondsToSelector:@selector(setVideoMaxFrameDuration:)])
-                connection.videoMaxFrameDuration = kCMTimeInvalid; // This sets videoMaxFrameDuration back to default
+                    connection.videoMaxFrameDuration = kCMTimeInvalid; // This sets videoMaxFrameDuration back to default
 #pragma clang diagnostic pop
             }
         }
@@ -1215,10 +1215,10 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
                 {
                     switch(_outputImageOrientation)
                     {
-                            case UIInterfaceOrientationPortrait:internalRotation = kGPUImageRotateRightFlipVertical; break;
-                            case UIInterfaceOrientationPortraitUpsideDown:internalRotation = kGPUImageRotate180; break;
-                            case UIInterfaceOrientationLandscapeLeft:internalRotation = kGPUImageFlipHorizonal; break;
-                            case UIInterfaceOrientationLandscapeRight:internalRotation = kGPUImageFlipVertical; break;
+                        case UIInterfaceOrientationPortrait:internalRotation = kGPUImageRotateRightFlipVertical; break;
+                        case UIInterfaceOrientationPortraitUpsideDown:internalRotation = kGPUImageRotate180; break;
+                        case UIInterfaceOrientationLandscapeLeft:internalRotation = kGPUImageFlipHorizonal; break;
+                        case UIInterfaceOrientationLandscapeRight:internalRotation = kGPUImageFlipVertical; break;
                         default:internalRotation = kGPUImageNoRotation;
                     }
                 }
@@ -1226,10 +1226,10 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
                 {
                     switch(_outputImageOrientation)
                     {
-                            case UIInterfaceOrientationPortrait:internalRotation = kGPUImageRotateRight; break;
-                            case UIInterfaceOrientationPortraitUpsideDown:internalRotation = kGPUImageRotateLeft; break;
-                            case UIInterfaceOrientationLandscapeLeft:internalRotation = kGPUImageRotate180; break;
-                            case UIInterfaceOrientationLandscapeRight:internalRotation = kGPUImageNoRotation; break;
+                        case UIInterfaceOrientationPortrait:internalRotation = kGPUImageRotateRight; break;
+                        case UIInterfaceOrientationPortraitUpsideDown:internalRotation = kGPUImageRotateLeft; break;
+                        case UIInterfaceOrientationLandscapeLeft:internalRotation = kGPUImageRotate180; break;
+                        case UIInterfaceOrientationLandscapeRight:internalRotation = kGPUImageNoRotation; break;
                         default:internalRotation = kGPUImageNoRotation;
                     }
                 }
@@ -1240,10 +1240,10 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
                 {
                     switch(_outputImageOrientation)
                     {
-                            case UIInterfaceOrientationPortrait:internalRotation = kGPUImageRotateRightFlipVertical; break;
-                            case UIInterfaceOrientationPortraitUpsideDown:internalRotation = kGPUImageRotateRightFlipHorizontal; break;
-                            case UIInterfaceOrientationLandscapeLeft:internalRotation = kGPUImageFlipHorizonal; break;
-                            case UIInterfaceOrientationLandscapeRight:internalRotation = kGPUImageFlipVertical; break;
+                        case UIInterfaceOrientationPortrait:internalRotation = kGPUImageRotateRightFlipVertical; break;
+                        case UIInterfaceOrientationPortraitUpsideDown:internalRotation = kGPUImageRotateRightFlipHorizontal; break;
+                        case UIInterfaceOrientationLandscapeLeft:internalRotation = kGPUImageFlipHorizonal; break;
+                        case UIInterfaceOrientationLandscapeRight:internalRotation = kGPUImageFlipVertical; break;
                         default:internalRotation = kGPUImageNoRotation;
                     }
                 }
@@ -1251,10 +1251,10 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
                 {
                     switch(_outputImageOrientation)
                     {
-                            case UIInterfaceOrientationPortrait:internalRotation = kGPUImageRotateRight; break;
-                            case UIInterfaceOrientationPortraitUpsideDown:internalRotation = kGPUImageRotateLeft; break;
-                            case UIInterfaceOrientationLandscapeLeft:internalRotation = kGPUImageNoRotation; break;
-                            case UIInterfaceOrientationLandscapeRight:internalRotation = kGPUImageRotate180; break;
+                        case UIInterfaceOrientationPortrait:internalRotation = kGPUImageRotateRight; break;
+                        case UIInterfaceOrientationPortraitUpsideDown:internalRotation = kGPUImageRotateLeft; break;
+                        case UIInterfaceOrientationLandscapeLeft:internalRotation = kGPUImageNoRotation; break;
+                        case UIInterfaceOrientationLandscapeRight:internalRotation = kGPUImageRotate180; break;
                         default:internalRotation = kGPUImageNoRotation;
                     }
                 }
@@ -1268,10 +1268,10 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
                 {
                     switch(_outputImageOrientation)
                     {
-                            case UIInterfaceOrientationPortrait:outputRotation = kGPUImageRotateRightFlipVertical; break;
-                            case UIInterfaceOrientationPortraitUpsideDown:outputRotation = kGPUImageRotate180; break;
-                            case UIInterfaceOrientationLandscapeLeft:outputRotation = kGPUImageFlipHorizonal; break;
-                            case UIInterfaceOrientationLandscapeRight:outputRotation = kGPUImageFlipVertical; break;
+                        case UIInterfaceOrientationPortrait:outputRotation = kGPUImageRotateRightFlipVertical; break;
+                        case UIInterfaceOrientationPortraitUpsideDown:outputRotation = kGPUImageRotate180; break;
+                        case UIInterfaceOrientationLandscapeLeft:outputRotation = kGPUImageFlipHorizonal; break;
+                        case UIInterfaceOrientationLandscapeRight:outputRotation = kGPUImageFlipVertical; break;
                         default:outputRotation = kGPUImageNoRotation;
                     }
                 }
@@ -1279,10 +1279,10 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
                 {
                     switch(_outputImageOrientation)
                     {
-                            case UIInterfaceOrientationPortrait:outputRotation = kGPUImageRotateRight; break;
-                            case UIInterfaceOrientationPortraitUpsideDown:outputRotation = kGPUImageRotateLeft; break;
-                            case UIInterfaceOrientationLandscapeLeft:outputRotation = kGPUImageRotate180; break;
-                            case UIInterfaceOrientationLandscapeRight:outputRotation = kGPUImageNoRotation; break;
+                        case UIInterfaceOrientationPortrait:outputRotation = kGPUImageRotateRight; break;
+                        case UIInterfaceOrientationPortraitUpsideDown:outputRotation = kGPUImageRotateLeft; break;
+                        case UIInterfaceOrientationLandscapeLeft:outputRotation = kGPUImageRotate180; break;
+                        case UIInterfaceOrientationLandscapeRight:outputRotation = kGPUImageNoRotation; break;
                         default:outputRotation = kGPUImageNoRotation;
                     }
                 }
@@ -1293,10 +1293,10 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
                 {
                     switch(_outputImageOrientation)
                     {
-                            case UIInterfaceOrientationPortrait:outputRotation = kGPUImageRotateRightFlipVertical; break;
-                            case UIInterfaceOrientationPortraitUpsideDown:outputRotation = kGPUImageRotateRightFlipHorizontal; break;
-                            case UIInterfaceOrientationLandscapeLeft:outputRotation = kGPUImageFlipHorizonal; break;
-                            case UIInterfaceOrientationLandscapeRight:outputRotation = kGPUImageFlipVertical; break;
+                        case UIInterfaceOrientationPortrait:outputRotation = kGPUImageRotateRightFlipVertical; break;
+                        case UIInterfaceOrientationPortraitUpsideDown:outputRotation = kGPUImageRotateRightFlipHorizontal; break;
+                        case UIInterfaceOrientationLandscapeLeft:outputRotation = kGPUImageFlipHorizonal; break;
+                        case UIInterfaceOrientationLandscapeRight:outputRotation = kGPUImageFlipVertical; break;
                         default:outputRotation = kGPUImageNoRotation;
                     }
                 }
@@ -1304,10 +1304,10 @@ void setColorConversion709( GLfloat conversionMatrix[9] )
                 {
                     switch(_outputImageOrientation)
                     {
-                            case UIInterfaceOrientationPortrait:outputRotation = kGPUImageRotateRight; break;
-                            case UIInterfaceOrientationPortraitUpsideDown:outputRotation = kGPUImageRotateLeft; break;
-                            case UIInterfaceOrientationLandscapeLeft:outputRotation = kGPUImageNoRotation; break;
-                            case UIInterfaceOrientationLandscapeRight:outputRotation = kGPUImageRotate180; break;
+                        case UIInterfaceOrientationPortrait:outputRotation = kGPUImageRotateRight; break;
+                        case UIInterfaceOrientationPortraitUpsideDown:outputRotation = kGPUImageRotateLeft; break;
+                        case UIInterfaceOrientationLandscapeLeft:outputRotation = kGPUImageNoRotation; break;
+                        case UIInterfaceOrientationLandscapeRight:outputRotation = kGPUImageRotate180; break;
                         default:outputRotation = kGPUImageNoRotation;
                     }
                 }
